@@ -30,7 +30,15 @@ def generate2(sequential_points, a):
         yield y3
         y2, y1 = y3, y2
 
-def eval2(n0, n1, c, at):
+def eval2(points, c, x):
+    at = x - points[0][0]
+    nat = points[1][1]
+    n0 = points[0][1]
+    points[1] = (nat + (at - 1) * n0 - math.factorial(at) * c) / -at
+    return eval2seq(points[0], points[1], c, x)
+
+def eval2seq(points, c, at):
+    n0, n1 = points[0][1], points[1][1]
     return at * n1 - (at - 1) * n0 + math.factorial(at) * c
 
 if __name__ == '__main__':
