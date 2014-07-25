@@ -37,10 +37,19 @@ def eval2(points, c, x):
     points[1] = (nat + (at - 1) * n0 - math.factorial(at) * c) / -at
     return eval2seq(points[0], points[1], c, x)
 
-def eval2seq(points, c, at):
+def eval2seq(points, c, x):
     n0, n1 = points[0][1], points[1][1]
+    at = points[0][0] - x
     return at * n1 - (at - 1) * n0 + math.factorial(at) * c
 
 if __name__ == '__main__':
-    from tests import *
-    unittest.main()
+    from reference import Polynomial
+    p = Polynomial([10, 5, 3])
+    print(p(10))
+    print(p(11))
+    #print(5 * p(11) - 8 * p(10) + 32 * 3)
+    print(p(12), 2 * p(11) - 1 * p(10) + 2 * 3)
+    print(p(13), 3 * p(11) - 2 * p(10) + 6 * 3)
+    print(p(14), 4 * p(11) - 3 * p(10) + 12 * 3)
+    print(p(15), 5 * p(11) - 4 * p(10) + 20 * 3)
+    print(p(16), 6 * p(11) - 5 * p(10) + 30 * 3)
