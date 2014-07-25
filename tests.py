@@ -34,12 +34,10 @@ class Tests(unittest.TestCase):
         for i in range(100):
             poly = randpoly(2)
             points = [(x, eval_naive_poly(poly, x)) for x in range(1, 3)]
-            generator = generate2(points, poly[0])
             for i in range(20):
                 x = randint(-100, 100)
                 self.assertEqual(eval2seq(points, poly[0], x),
                                  eval_naive_poly(poly, x))
-                self.assertEqual(next(generator), eval_naive_poly(poly, i))
 
     def test_eval2(self):
         for i in range(100):

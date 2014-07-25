@@ -31,16 +31,27 @@ def generate2(sequential_points, a):
         y2, y1 = y3, y2
 
 def eval2(points, c, x):
-    at = x - points[0][0]
-    nat = points[1][1]
-    n0 = points[0][1]
-    points[1] = (nat + (at - 1) * n0 - math.factorial(at) * c) / -at
-    return eval2seq(points[0], points[1], c, x)
+    p1, pn = points
+    if p1 > pn:
+        p1, pn = pn, p1
+    x1, y1 = p1
+    xn, yn = pn
+    d = xn - x1 - 1
+
+    x2 = x1 + 1
+    y2 = (d * y1 - d * (d + 1) * c + yn) / (d + 1)
+    points = [(x1, y1), (x2, y2)]
+    return eval2seq(points, c, x)
 
 def eval2seq(points, c, x):
-    n0, n1 = points[0][1], points[1][1]
-    at = points[0][0] - x
-    return at * n1 - (at - 1) * n0 + math.factorial(at) * c
+    p1, p2 = points
+    if p1 > p2:
+        p1, p2 = p2, p1
+    x1, y1 = p1
+    x2, y2 = p2
+    d = x - x2
+
+    return (d + 1) * y2 - d * y1 + d * (d + 1) * c
 
 if __name__ == '__main__':
     from reference import Polynomial
@@ -48,8 +59,6 @@ if __name__ == '__main__':
     print(p(10))
     print(p(11))
     #print(5 * p(11) - 8 * p(10) + 32 * 3)
-    print(p(12), 2 * p(11) - 1 * p(10) + 2 * 3)
-    print(p(13), 3 * p(11) - 2 * p(10) + 6 * 3)
-    print(p(14), 4 * p(11) - 3 * p(10) + 12 * 3)
-    print(p(15), 5 * p(11) - 4 * p(10) + 20 * 3)
-    print(p(16), 6 * p(11) - 5 * p(10) + 30 * 3)
+    print(p(16), eval2([(10, p(10)), (11, p(11))], 3, 16))
+    print(p(17), eval2([(10, p(10)), (11, p(11))], 3, 17))
+    print(p(10), eval2([(14, p(14)), (15, p(15))], 3, 10))
