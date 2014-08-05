@@ -44,10 +44,14 @@ class Tests(unittest.TestCase):
             poly = randpoly(2)
             x0 = randint(1, 100)
             xn = randint(1, 100)
+            if x0 == xn:
+                continue
             points = [(x0, eval_naive_poly(poly, x0)), (xn, eval_naive_poly(poly, xn))]
 
             for i in range(20):
                 x = randint(-100, 100)
+                if x in (x0, xn):
+                    continue
                 self.assertEqual(eval2(points, poly[0], x), eval_naive_poly(poly, x))
 
 
