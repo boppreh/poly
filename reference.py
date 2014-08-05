@@ -1,7 +1,14 @@
+from random import randint
+
 class Polynomial(object):
     """
     Class for handling polynomials with overloaded operators.
     """
+    @staticmethod
+    def random(degree, min_coef=-10, max_coef=10):
+        return Polynomial(randint(min_coef, max_coef) for d in range(degree +
+            1))
+
     def __init__(self, coefs=()):
         """
         Creates a new polynomial with the given coefficients.
@@ -14,6 +21,15 @@ class Polynomial(object):
 
         self.coefs = coefs
         self.degree = len(self.coefs)
+
+    def __getitem__(self, index):
+        return self.coefs[index]
+
+    def point(self, x):
+        return (x, self(x))
+
+    def points(self, *xs):
+        return [self.point(x) for x in xs]
 
     def __add__(self, other):
         return Polynomial(c1 + c2 for c1, c2 in self._wrap_zip(other))
@@ -47,7 +63,7 @@ class Polynomial(object):
     def __truediv__(self, other):
         return self.__div__(other)
 
-    def naive_evaluation(self, x):
+    def _naive_evaluation(self, x):
         power = 1
         total = 0
         for coef in self.coefs:
@@ -56,7 +72,7 @@ class Polynomial(object):
 
         return total
 
-    def horner_evaluation(self, x):
+    def _horner_evaluation(self, x):
         result = self.coefs[-1]
         for coef in reversed(self.coefs[:-1]):
             result = coef + result * x
@@ -67,7 +83,7 @@ class Polynomial(object):
         """
         Evaluates the Polynomial at `x`.
         """
-        return self.horner_evaluation(x)
+        return self._horner_evaluation(x)
 
     def __repr__(self):
         """
