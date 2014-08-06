@@ -5,7 +5,7 @@ class Polynomial(object):
     Class for handling polynomials with overloaded operators.
     """
     @staticmethod
-    def random(degree, min_coef=-10, max_coef=10):
+    def random(degree, min_coef=1, max_coef=10):
         return Polynomial(randint(min_coef, max_coef) for d in range(degree +
             1))
 
@@ -90,7 +90,7 @@ class Polynomial(object):
         Prints the polynomial in the format 10x^0 + 5x^1 + 2x^2 + ...
         """
         return ' + '.join('{}x^{}'.format(coef, power) for power, coef in
-                reversed(list(enumerate(self.coefs))))
+                          reversed(list(enumerate(self.coefs))))
 
     def __str__(self):
         return repr(self)

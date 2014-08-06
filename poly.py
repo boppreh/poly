@@ -10,15 +10,22 @@ def choose(n, k):
 def generate(sequential_points, a):
     d = len(sequential_points)
     constant = math.factorial(d) * a
+    ys = [y for x, y in sequential_points]
     while True:
         total = 0
-        for i, point in enumerate(sequential_points, start=1):
-            part = choose(d, i) * point[1]
+        for i, y in enumerate(ys):
+            # Factor 7 * i * (i + 1)
+            # comes from https://oeis.org/A163756
+            part = choose(d, i) * y# - 7 * i * (i + 1)
             if i % 2:
                 total -= part
             else:
                 total += part
-        yield total + constant
+        new_y = constant - total
+        yield new_y
+        ys.pop(0)
+        ys.append(new_y)
+
 
 def generate2(sequential_points, a):
     p1, p2 = sequential_points
@@ -55,10 +62,6 @@ def eval2seq(points, c, x):
 
 if __name__ == '__main__':
     from reference import Polynomial
-    p = Polynomial([10, 5, 3])
-    print(p(10))
-    print(p(11))
-    #print(5 * p(11) - 8 * p(10) + 32 * 3)
-    print(p(16), eval2([(10, p(10)), (11, p(11))], 3, 16))
-    print(p(17), eval2([(10, p(10)), (11, p(11))], 3, 17))
-    print(p(10), eval2([(14, p(14)), (15, p(15))], 3, 10))
+    p = Polynomial([10, 5, 1])
+    points = p.points(2, 4)
+    print(all(p(i) == eval2(points, p[-1], i) for i in range(10, 100)))
