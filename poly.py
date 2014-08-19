@@ -20,19 +20,11 @@ def generate(sequential_points, a):
     constant = math.factorial(d) * a
     ys = [y for x, y in sequential_points]
     while True:
-        total = 0
-        for i, y in enumerate(ys):
-            # Factor 7 * i * (i + 1)
-            # comes from https://oeis.org/A163756
-            part = choose(d, i) * y# - 7 * i * (i + 1)
-            if i % 2:
-                total -= part
-            else:
-                total += part
-        new_y = constant - total
+        new_y = constant
+        for i, y in enumerate(reversed(ys), 1):
+            new_y -= (-1)**i * choose(d, i) * y
         yield new_y
-        ys.pop(0)
-        ys.append(new_y)
+        ys = ys[1:] + [new_y]
 
 
 def generate2(sequential_points, a):

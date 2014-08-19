@@ -4,7 +4,6 @@ from reference import Polynomial
 from poly import *
 
 class Tests(unittest.TestCase):
-    @unittest.skip
     def test_generate(self):
         for degree in range(2, 5):
             for i in range(100):
