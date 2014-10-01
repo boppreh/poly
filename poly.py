@@ -10,7 +10,7 @@ def choose(n, k):
         result *= Fraction(n-i,i+1)
     return int(result)
 
-def generate(sequential_points, a):
+def generate(sequential_points, a=0):
     """
     Given a list of points of length `d` and the coefficient of the
     largest power from a polynomial of degree `d`, returns a generator
