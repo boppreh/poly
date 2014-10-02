@@ -26,18 +26,6 @@ def generate(sequential_points, a=0):
         yield new_y
         ys = ys[1:] + [new_y]
 
-def generate_simple(ys):
-    """
-    Shortcut function. Given a list of the y values of equally spaced sorted
-    x's, generates the following y.
-
-    next(generate_simple([p(1), p(3), p(5)])) == p(7)
-    """
-    d = len(ys)
-    while True:
-        ys = ys[1:] + [sum((-1)**i * choose(d, i)*y for i, y in enumerate(ys))]
-        yield ys[-1]
-
 def jump(ys, distance):
     """
     Given a list of the y values of equally spaced sorted x's, returns the y
@@ -46,18 +34,13 @@ def jump(ys, distance):
     jump([p(0), p(1), p(2)], 10) = p(10)
     jump([p(x), p(x+2), p(x+4)], x+10) = p(10*2)
     """
-    d = len(ys)
-    while distance > 0:
-        gen = generate_simple(list(ys))
-        for i in range(d-1):
-            ys.append(next(gen))
-        if distance % 2 == 1:
-            ys = ys[1:] + [next(gen)]
-
-        # Zoom out.
+    n = len(ys)
+    while distance:
+        for i in range(n - 1 + distance % 2):
+            ys.append(sum((-1)**(i+n+1) * y * choose(n, i)
+                          for i, y in enumerate(ys[-n:])))
+        ys = ys[distance % 2::2]
         distance //= 2
-        ys = ys[::2]
-
     return ys[0]
 
 def generate2(sequential_points, a):
@@ -107,5 +90,11 @@ def eval2seq(points, c, x):
 
 if __name__ == '__main__':
     from reference import Polynomial
-    p = Polynomial([10, 5, 1])
-    print(jump([p(1), p(3), p(5)], 10), p(2 * 10 + 1))
+    p = Polynomial([10, 5])
+    print(jump([p(0), p(1)], 5), p(5))
+
+    p = Polynomial([10, 5, 2])
+    print(jump([p(1), p(3), p(5)], 5), p(11))
+
+    p = Polynomial([10, 5, 2, 1])
+    print(jump([p(1), p(3), p(5), p(7)], 5), p(11))
