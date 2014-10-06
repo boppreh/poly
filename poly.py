@@ -32,7 +32,7 @@ def jump(ys, distance):
     for the x `distance` spacings away from the first point.
 
     jump([p(0), p(1), p(2)], 10) = p(10)
-    jump([p(x), p(x+2), p(x+4)], x+10) = p(10*2)
+    jump([p(x), p(x+2), p(x+4)], 10) = p(x + 10*2)
     """
     n = len(ys)
     while distance:
