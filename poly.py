@@ -26,13 +26,13 @@ def generate(sequential_points, a=0):
         yield new_y
         ys = ys[1:] + [new_y]
 
-def jump(ys, distance):
+def long_step(ys, distance):
     """
     Given a list of the y values of equally spaced sorted x's, returns the y
     for the x `distance` spacings away from the first point.
 
-    jump([p(0), p(1), p(2)], 10) = p(10)
-    jump([p(x), p(x+2), p(x+4)], 10) = p(x + 10*2)
+    long_step([p(0), p(1), p(2)], 10) = p(10)
+    long_step([p(x), p(x+2), p(x+4)], 10) = p(x + 10*2)
     """
     n = len(ys)
     while distance:
